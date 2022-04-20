@@ -121,8 +121,8 @@ CREATE TABLE movies (
 CREATE TABLE casts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     movies_id INTEGER,
-    character_name TEXT,
-    actor_name TEXT
+    actor_name TEXT,
+    character_name TEXT
 );
 
 -- NOTE: Alternative solution that I need to think through more
@@ -182,9 +182,10 @@ VALUES (1, 1, "Christian Bale", "Bruce Wayne"),
 .print ""
 
 -- The SQL statement for the movies output
-SELECT movie_title, actor_name, character_name
+SELECT movie_title, year_released, mpaa_rating, studio_name
 FROM movies
-INNER JOIN casts ON movies_id = casts.movies_id
+INNER JOIN studios ON studios_id = movies.studio_id
+ORDER BY year_released ASC
 
 -- Prints a header for the cast output
 .print ""
@@ -193,5 +194,7 @@ INNER JOIN casts ON movies_id = casts.movies_id
 .print ""
 
 -- The SQL statement for the cast output
-SELECT *
-FROM casts;
+SELECT movie_title, actor_name, character_name
+FROM movies
+INNER JOIN casts ON movies_id = casts.movies_id
+ORDER BY movie_title ASC
