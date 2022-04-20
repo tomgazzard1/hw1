@@ -102,39 +102,79 @@
 -- Drop existing tables, so you'll start fresh each time this script is run.
 DROP TABLE IF EXISTS studios;
 DROP TABLE IF EXISTS movies;
-DROP TABLE IF EXISTS characters;
-DROP TABLE IF EXISTS actors;
+DROP TABLE IF EXISTS casts;
 
 -- Create new tables, according to your domain model
 CREATE TABLE studios (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     studio_name TEXT
-)
+);
 
 CREATE TABLE movies (
-    id INTEGER PRIMARY KEY AUTOCINCREMENT,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     studio_id INTEGER,
     movie_title TEXT,
     mpaa_rating TEXT,
     year_released TEXT
-)
+);
 
-CREATE TABLE characters (
-    id INTEGER PRIMARY KEY AUTOCINCREMENT,
-    movie_id INTEGER,
-    actor_id INTEGER,
-    character_name TEXT,
-)
-
-CREATE TABLE actors (
+CREATE TABLE casts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    actor_first_name TEXT,
-    actor_last_name TEXT,
-)
+    movies_id INTEGER,
+    character_name TEXT,
+    actor_name TEXT
+);
+
+-- NOTE: Alternative solution that I need to think through more
+-- CREATE TABLE characters (
+--    id INTEGER PRIMARY KEY AUTOINCREMENT,
+--    movie_id INTEGER,
+--    actor_id INTEGER,
+--    character_name TEXT
+--);
+
+-- Do not include movie_id in actors table. Example: actors row has one actor. It is Daniel Day-Lewis. Each movie he is in would create a new row because each movie would have a 
+-- unique movie_id ID OR there would be one row and wouldn't know which movie_id to use.
+--CREATE TABLE actors (
+--    id INTEGER PRIMARY KEY AUTOINCREMENT,
+--    actor_first_name TEXT,
+--    actor_last_name TEXT
+--);
 
 -- Insert data into your database that reflects the sample data shown above
 -- Use hard-coded foreign key IDs when necessary
--- TODO!
+
+-- Insert data into studios table
+INSERT INTO studios (
+  studio_name
+)
+VALUES (
+  "Warner Bros."
+);
+
+-- Insert data into movies table
+INSERT INTO movies
+VALUES (1, 1, "Batman Begins", "2005", "PG-13"),
+(2, 1, "The Dark Knight", "2008", "PG-13"),
+(3, 1, "The Dark Knight Rises", "2012", "PG-13");
+
+-- Insert data into characters table
+INSERT INTO casts
+VALUES (1, 1, "Christian Bale", "Bruce Wayne"),
+(2, 1, "Michael Caine", "Alfred"),
+(3, 1, "Liam Neeson", "Ra's Al Ghul"),
+(4, 1, "Katie Holmes", "Rachel Dawes"),
+(5, 1, "Gary Oldman", "Commissioner Gordon"),
+(6, 2, "Christian Bale", "Bruce Wayne"),
+(7, 2, "Heath Ledger", "Joker"),
+(8, 2, "Aaron Eckhart", "Harvey Dent"),
+(9, 2, "Michael Caine", "Alfred"),
+(10, 2, "Maggie Gyllenhaal", "Rachel Dawes"),
+(11, 3, "Christian Bale", "Bruce Wayne"),
+(12, 3, "Gary Oldman", "Commissioner Gordon"),
+(13, 3, "Tom Hardy", "Bane"),
+(14, 3, "Joseph Gordon-Levitt", "John Blake"),
+(15, 3, "Anne Hathaway", "Selina Kyle");
 
 -- Prints a header for the movies output
 .print "Movies"
@@ -142,7 +182,9 @@ CREATE TABLE actors (
 .print ""
 
 -- The SQL statement for the movies output
--- TODO!
+SELECT movie_title, actor_name, character_name
+FROM movies
+INNER JOIN casts ON movies_id = casts.movies_id
 
 -- Prints a header for the cast output
 .print ""
@@ -150,6 +192,6 @@ CREATE TABLE actors (
 .print "========"
 .print ""
 
-
 -- The SQL statement for the cast output
--- TODO!
+SELECT *
+FROM casts;
