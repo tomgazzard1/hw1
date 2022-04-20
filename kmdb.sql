@@ -114,8 +114,8 @@ CREATE TABLE movies (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     studio_id INTEGER,
     movie_title TEXT,
-    mpaa_rating TEXT,
-    year_released TEXT
+    year_released TEXT,
+    mpaa_rating TEXT 
 );
 
 CREATE TABLE casts (
@@ -183,9 +183,9 @@ VALUES (1, 1, "Christian Bale", "Bruce Wayne"),
 
 -- The SQL statement for the movies output
 SELECT movie_title, year_released, mpaa_rating, studio_name
-FROM movies
-INNER JOIN studios ON studios_id = movies.studio_id
-ORDER BY year_released ASC
+FROM movies 
+INNER JOIN studios ON studios.id = movies.studio_id
+ORDER BY year_released ASC;
 
 -- Prints a header for the cast output
 .print ""
@@ -194,7 +194,8 @@ ORDER BY year_released ASC
 .print ""
 
 -- The SQL statement for the cast output
+
 SELECT movie_title, actor_name, character_name
 FROM movies
-INNER JOIN casts ON movies_id = casts.movies_id
+INNER JOIN casts ON movies.id = casts.movies_id
 ORDER BY movie_title ASC
